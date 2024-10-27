@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "info": {
     "title": "OpenAPI CallX",
-    "description": "A API that uses a Calx  an example to demonstrate features in the OpenAPI specification",
+    "description": "An API that handles outbound calls and customer interactions",
     "license": {
       "name": "MIT"
     },
@@ -23,7 +23,7 @@
       "post": {
         "description": "Creates a new outbound call in the callX",
         "requestBody": {
-          "description": "Call to add to the Callx",
+          "description": "Call details to create a new outbound call",
           "content": {
             "application/json": {
               "schema": {
@@ -35,50 +35,17 @@
         },
         "responses": {
           "200": {
-            "description": "call response",
+            "description": "Call created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Call"
+                  "$ref": "#/components/schemas/CallResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+            "description": "Bad request or validation error",
             "content": {
               "application/json": {
                 "schema": {
@@ -93,55 +60,78 @@
   },
   "components": {
     "schemas": {
-      "Call": {
-        "required": [
-          "name"
-        ],
+      "Assistant": {
         "type": "object",
+        "required": ["firstMessage", "systemPrompt"],
         "properties": {
-          "name": {
-            "description": "The name of the call",
-            "type": "string"
+          "firstMessage": {
+            "type": "string",
+            "description": "Initial message to be sent to the customer"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "systemPrompt": {
+            "type": "string",
+            "description": "System prompt defining assistant behavior"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Call"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
+      "Customer": {
+        "type": "object",
+        "required": ["number"],
+        "properties": {
+          "number": {
+            "type": "string",
+            "description": "Customer's phone number in international format",
+            "example": "+971567027084"
           }
-        ]
+        }
+      },
+      "NewCall": {
+        "type": "object",
+        "required": ["assistant", "phoneNumberId", "customer"],
+        "properties": {
+          "assistant": {
+            "$ref": "#/components/schemas/Assistant"
+          },
+          "phoneNumberId": {
+            "type": "string",
+            "description": "Unique identifier for the phone number making the call"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          }
+        }
+      },
+      "CallResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the created call"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status of the created call",
+            "enum": ["pending", "initiated", "completed", "failed"]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp when the call was created"
+          }
+        }
       },
       "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
         "type": "object",
+        "required": ["error", "message"],
         "properties": {
           "error": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "description": "Error code"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Error message describing what went wrong"
           }
         }
       }
