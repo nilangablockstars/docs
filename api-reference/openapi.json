@@ -39,7 +39,33 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CallResponse"
+                  "type": "object",
+                  "required": ["callSid", "accountSid", "callLogId", "to", "from", "status", "direction"],
+                  "properties": {
+                    "callSid": {
+                      "type": "string"
+                    },
+                    "accountSid": {
+                      "type": "string"
+                    },
+                    "callLogId": {
+                      "type": "string"
+                    },
+                    "to": {
+                      "type": "string"
+                    },
+                    "from": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string",
+                      "enum": ["queued"]
+                    },
+                    "direction": {
+                      "type": "string",
+                      "enum": ["outbound-api"]
+                    }
+                  }
                 }
               }
             }
@@ -79,8 +105,7 @@
         "properties": {
           "number": {
             "type": "string",
-            "description": "Customer's phone number in international format",
-            "example": "+971567027084"
+            "description": "Customer's phone number in international format"
           }
         }
       },
@@ -97,25 +122,6 @@
           },
           "customer": {
             "$ref": "#/components/schemas/Customer"
-          }
-        }
-      },
-      "CallResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier for the created call"
-          },
-          "status": {
-            "type": "string",
-            "description": "Status of the created call",
-            "enum": ["pending", "initiated", "completed", "failed"]
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Timestamp when the call was created"
           }
         }
       },
