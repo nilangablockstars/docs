@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "OpenAPI CallX",
+    "description": "A API that uses a Calx  an example to demonstrate features in the OpenAPI specification",
     "license": {
       "name": "MIT"
     },
@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://call-x-git-dev-blockstarsorg.vercel.app"
     }
   ],
   "security": [
@@ -19,54 +19,15 @@
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/calls": {
       "post": {
-        "description": "Creates a new plant in the store",
+        "description": "Creates a new outbound call in the callX",
         "requestBody": {
-          "description": "Plant to add to the store",
+          "description": "Call to add to the Callx",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/NewCall"
               }
             }
           },
@@ -74,11 +35,11 @@
         },
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "call response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "$ref": "#/components/schemas/Call"
                 }
               }
             }
@@ -132,14 +93,14 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
+      "Call": {
         "required": [
           "name"
         ],
         "type": "object",
         "properties": {
           "name": {
-            "description": "The name of the plant",
+            "description": "The name of the call",
             "type": "string"
           },
           "tag": {
@@ -151,7 +112,7 @@
       "NewPlant": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/Plant"
+            "$ref": "#/components/schemas/Call"
           },
           {
             "required": [
