@@ -1,91 +1,161 @@
 {
-  "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
-  "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI CallX",
+    "description": "An API that handles outbound calls and customer interactions",
+    "license": {
+      "name": "MIT"
+    },
+    "version": "1.0.0"
   },
-  "favicon": "/favicon.svg",
-  "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373",
-    "anchors": {
-      "from": "#0D9373",
-      "to": "#07C983"
+  "servers": [
+    {
+      "url": "https://call-x-git-dev-blockstarsorg.vercel.app"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/api/v1/calls": {
+      "post": {
+        "description": "Creates a new outbound call in the callX",
+        "requestBody": {
+          "description": "Call details to create a new outbound call",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewCall"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Call created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CallResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request or validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
-  "topbarLinks": [
-    {
-      "name": "Support",
-      "url": "mailto:hi@mintlify.com"
+  "components": {
+    "schemas": {
+      "Assistant": {
+        "type": "object",
+        "properties": {
+          "firstMessage": {
+            "type": "string",
+            "description": "Initial message to be sent to the customer"
+          },
+          "systemPrompt": {
+            "type": "string",
+            "description": "System prompt defining assistant behavior"
+          }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "required": ["number"],
+        "properties": {
+          "number": {
+            "type": "string",
+            "description": "Customer's phone number in international format"
+          }
+        }
+      },
+      "NewCall": {
+        "type": "object",
+        "required": ["phoneNumberId", "customer"],
+        "properties": {
+          "assistant": {
+            "$ref": "#/components/schemas/Assistant"
+          },
+          "phoneNumberId": {
+            "type": "string",
+            "description": "Unique identifier for the phone number making the call"
+          },
+          "customer": {
+            "$ref": "#/components/schemas/Customer"
+          }
+        }
+      },
+      "CallResponse": {
+        "type": "object",
+        "required": ["callSid", "accountSid", "callLogId", "to", "from", "status", "direction"],
+        "properties": {
+          "callSid": {
+            "type": "string",
+            "description": "Unique identifier for the call from Twilio"
+          },
+          "accountSid": {
+            "type": "string",
+            "description": "Twilio account identifier"
+          },
+          "callLogId": {
+            "type": "string",
+            "description": "Internal call log identifier"
+          },
+          "to": {
+            "type": "string",
+            "description": "Destination phone number"
+          },
+          "from": {
+            "type": "string",
+            "description": "Source phone number"
+          },
+          "status": {
+            "type": "string",
+            "description": "Current status of the call",
+            "enum": ["queued", "initiated", "ringing", "in-progress", "completed", "failed", "busy", "no-answer"]
+          },
+          "direction": {
+            "type": "string",
+            "description": "Direction of the call",
+            "enum": ["outbound-api"]
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error", "message"],
+        "properties": {
+          "error": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message describing what went wrong"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
     }
-  ],
-  "topbarCtaButton": {
-    "name": "Dashboard",
-    "url": "https://dashboard.mintlify.com"
-  },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
-  "anchors": [
-    {
-      "name": "Documentation",
-      "icon": "book-open-cover",
-      "url": "https://mintlify.com/docs"
-    },
-    {
-      "name": "Community",
-      "icon": "slack",
-      "url": "https://mintlify.com/community"
-    },
-    {
-      "name": "Blog",
-      "icon": "newspaper",
-      "url": "https://mintlify.com/blog"
-    }
-  ],
-  "navigation": [
-    {
-      "group": "Get Started",
-      "pages": [
-        "introduction",
-        "quickstart",
-        "development"
-      ]
-    },
-    {
-      "group": "Essentials",
-      "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
-      ]
-    },
-    {
-      "group": "Endpoint Examples",
-      "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
-      ]
-    }
-  ],
-  "footerSocials": {
-    "x": "https://x.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://linkedin.com/company/mintlify"
   }
 }
