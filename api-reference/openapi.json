@@ -62,7 +62,6 @@
     "schemas": {
       "Assistant": {
         "type": "object",
-        "required": ["firstMessage", "systemPrompt"],
         "properties": {
           "firstMessage": {
             "type": "string",
@@ -87,7 +86,7 @@
       },
       "NewCall": {
         "type": "object",
-        "required": ["assistant", "phoneNumberId", "customer"],
+        "required": ["phoneNumberId", "customer"],
         "properties": {
           "assistant": {
             "$ref": "#/components/schemas/Assistant"
