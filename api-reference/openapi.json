@@ -89,6 +89,10 @@
       "Assistant": {
         "type": "object",
         "properties": {
+          "assistantId": {
+            "type": "string",
+            "description": "Unique identifier for the Assistant id making the call"
+          },
           "firstMessage": {
             "type": "string",
             "description": "Initial message to be sent to the customer"
