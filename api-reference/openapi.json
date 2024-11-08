@@ -146,6 +146,70 @@
           }
         }
       }
+    },
+    "/api/v1/call-logs/{id}/summary": {
+      "get": {
+        "description": "Retrieves the summary for a specific call log",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the call log",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "Response format (text for plain text, omit for JSON)",
+            "schema": {
+              "type": "string",
+              "enum": ["text"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Summary retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Summary"
+                }
+              },
+              "text/plain": {
+                "schema": {
+                  "type": "string",
+                  "description": "Plain text summary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request or validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Call log or summary not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -190,6 +254,36 @@
           },
           "customer": {
             "$ref": "#/components/schemas/Customer"
+          }
+        }
+      },
+      "Summary": {
+        "type": "object",
+        "required": ["id", "callLogId", "summary", "createdAt"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the summary"
+          },
+          "callLogId": {
+            "type": "string",
+            "description": "ID of the associated call log"
+          },
+          "summary": {
+            "type": "string",
+            "description": "Generated summary of the call"
+          },
+          "keyPoints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Key points extracted from the conversation"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the summary was created"
           }
         }
       },
