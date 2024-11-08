@@ -58,7 +58,7 @@
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Endpoints",
       "pages": [
         "api-reference/endpoint/create",
         "api-reference/endpoint/transcriptions"
