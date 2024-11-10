@@ -42,11 +42,11 @@
     {
       "group": "Essentials",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
+        "essentials/numbers",
+        "essentials/assistants",
+        "essentials/tools",
+        "essentials/topup",
+        "essentials/api",
         "essentials/reusable-snippets"
       ]
     },
