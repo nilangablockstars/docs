@@ -1,59 +1,60 @@
 {
     "openapi": "3.0.1",
     "info": {
-        "title": "OpenAPI CallX",
-        "description": "An API that handles outbound calls and customer interactions",
+        "title": "CallX API",
+        "description": "REST API for managing outbound calls and customer interactions with AI assistants",
+        "version": "1.0.0",
         "license": {
             "name": "MIT"
-        },
-        "version": "1.0.0"
+        }
     },
     "servers": [
         {
-            "url": "https://call-x-git-dev-blockstarsorg.vercel.app"
+            "url": "https://call-x-git-dev-blockstarsorg.vercel.app",
+            "description": "Development server"
         }
     ],
-    "security": [
+    "tags": [
         {
-            "bearerAuth": []
+            "name": "Calls",
+            "description": "Operations related to outbound calls"
+        },
+        {
+            "name": "Call Logs",
+            "description": "Operations for managing call logs and related data"
         }
     ],
     "paths": {
-    "/api/v1/call-logs": {
-            "get": {
-                "description": "Retrieves a list of call logs.",
+        "/api/v1/calls": {
+            "post": {
+                "tags": ["Calls"],
+                "summary": "Create a new outbound call",
+                "description": "Initiates a new outbound call using the specified phone number and assistant configuration",
+                "operationId": "createOutboundCall",
+                "requestBody": {
+                    "description": "Call details required to create a new outbound call",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/NewCall"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Call logs retrieved successfully.",
+                        "description": "Call created successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/CallLog"
-                                    }
-                                }
-                            },
-                            "text/plain": {
-                                "schema": {
-                                    "type": "string",
-                                    "description": "Plain text representation of the call logs."
+                                    "$ref": "#/components/schemas/CallResponse"
                                 }
                             }
                         }
                     },
                     "400": {
-                        "description": "Bad request or validation error.",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Call logs not found.",
+                        "description": "Bad request or validation error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -62,67 +63,29 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
-        "/api/v1/calls": {
-            "post": {
-                "description": "Creates a new outbound call in the callX",
-                "requestBody": {
-                    "description": "Call details to create a new outbound call",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/NewCall"
-                            }
-                        }
-                    },
-                    "required": true
-                },
+        "/api/v1/call-logs": {
+            "get": {
+                "tags": ["Call Logs"],
+                "summary": "List all call logs",
+                "description": "Retrieves a list of all call logs with their associated data",
+                "operationId": "getCallLogs",
                 "responses": {
                     "200": {
-                        "description": "Call created successfully",
+                        "description": "Call logs retrieved successfully",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "object",
-                                    "required": [
-                                        "callSid",
-                                        "accountSid",
-                                        "callLogId",
-                                        "to",
-                                        "from",
-                                        "status",
-                                        "direction"
-                                    ],
-                                    "properties": {
-                                        "callSid": {
-                                            "type": "string"
-                                        },
-                                        "accountSid": {
-                                            "type": "string"
-                                        },
-                                        "callLogId": {
-                                            "type": "string"
-                                        },
-                                        "to": {
-                                            "type": "string"
-                                        },
-                                        "from": {
-                                            "type": "string"
-                                        },
-                                        "status": {
-                                            "type": "string",
-                                            "enum": [
-                                                "queued"
-                                            ]
-                                        },
-                                        "direction": {
-                                            "type": "string",
-                                            "enum": [
-                                                "outbound-api"
-                                            ]
-                                        }
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/CallLog"
                                     }
                                 }
                             }
@@ -138,12 +101,20 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/call-logs/{id}/transcriptions": {
             "get": {
+                "tags": ["Call Logs"],
+                "summary": "Get call transcription",
                 "description": "Retrieves the transcription for a specific call log",
+                "operationId": "getCallTranscription",
                 "parameters": [
                     {
                         "name": "id",
@@ -161,9 +132,7 @@
                         "description": "Response format (text for plain text, omit for JSON)",
                         "schema": {
                             "type": "string",
-                            "enum": [
-                                "text"
-                            ]
+                            "enum": ["text"]
                         }
                     }
                 ],
@@ -184,16 +153,6 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad request or validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
                     "404": {
                         "description": "Call log or transcription not found",
                         "content": {
@@ -204,12 +163,20 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/call-logs/{id}/summary": {
             "get": {
-                "description": "Retrieves the summary for a specific call log",
+                "tags": ["Call Logs"],
+                "summary": "Get call summary",
+                "description": "Retrieves the AI-generated summary for a specific call log",
+                "operationId": "getCallSummary",
                 "parameters": [
                     {
                         "name": "id",
@@ -227,9 +194,7 @@
                         "description": "Response format (text for plain text, omit for JSON)",
                         "schema": {
                             "type": "string",
-                            "enum": [
-                                "text"
-                            ]
+                            "enum": ["text"]
                         }
                     }
                 ],
@@ -250,16 +215,6 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad request or validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
                     "404": {
                         "description": "Call log or summary not found",
                         "content": {
@@ -270,7 +225,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         }
     },
@@ -278,10 +238,11 @@
         "schemas": {
             "Assistant": {
                 "type": "object",
+                "required": ["assistantId"],
                 "properties": {
                     "assistantId": {
                         "type": "string",
-                        "description": "Unique identifier for the Assistant id making the call"
+                        "description": "Unique identifier for the Assistant making the call"
                     },
                     "firstMessage": {
                         "type": "string",
@@ -295,122 +256,63 @@
             },
             "Customer": {
                 "type": "object",
-                "required": [
-                    "number"
-                ],
+                "required": ["number"],
                 "properties": {
                     "number": {
                         "type": "string",
-                        "description": "Customer's phone number in international format"
+                        "description": "Customer's phone number in E.164 format (e.g., +1234567890)"
                     }
                 }
             },
             "NewCall": {
                 "type": "object",
-                "required": [
-                    "phoneNumberId",
-                    "customer"
-                ],
+                "required": ["phoneNumberId", "customer"],
                 "properties": {
-                    "assistant": {
-                        "$ref": "#/components/schemas/Assistant"
-                    },
                     "phoneNumberId": {
                         "type": "string",
                         "description": "Unique identifier for the phone number making the call"
                     },
                     "customer": {
                         "$ref": "#/components/schemas/Customer"
+                    },
+                    "assistant": {
+                        "$ref": "#/components/schemas/Assistant"
                     }
                 }
             },
-            "Summary": {
+            "CallResponse": {
                 "type": "object",
-                "required": [
-                    "id",
-                    "callLogId",
-                    "summary",
-                    "createdAt"
-                ],
+                "required": ["callSid", "accountSid", "callLogId", "to", "from", "status", "direction"],
                 "properties": {
-                    "id": {
+                    "callSid": {
                         "type": "string",
-                        "description": "Unique identifier for the summary"
+                        "description": "Unique identifier for the call"
+                    },
+                    "accountSid": {
+                        "type": "string",
+                        "description": "Account identifier associated with the call"
                     },
                     "callLogId": {
                         "type": "string",
-                        "description": "ID of the associated call log"
+                        "description": "Unique identifier for the call log"
                     },
-                    "summary": {
+                    "to": {
                         "type": "string",
-                        "description": "Generated summary of the call"
+                        "description": "Destination phone number"
                     },
-                    "keyPoints": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "description": "Key points extracted from the conversation"
-                    },
-                    "createdAt": {
+                    "from": {
                         "type": "string",
-                        "format": "date-time",
-                        "description": "When the summary was created"
-                    }
-                }
-            },
-            "Transcription": {
-                "type": "object",
-                "required": [
-                    "id",
-                    "callLogId",
-                    "transcript",
-                    "createdAt"
-                ],
-                "properties": {
-                    "id": {
-                        "type": "string",
-                        "description": "Unique identifier for the transcription"
+                        "description": "Source phone number"
                     },
-                    "callLogId": {
+                    "status": {
                         "type": "string",
-                        "description": "ID of the associated call log"
+                        "enum": ["queued"],
+                        "description": "Current status of the call"
                     },
-                    "transcript": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "required": [
-                                "speaker",
-                                "text",
-                                "timestamp"
-                            ],
-                            "properties": {
-                                "speaker": {
-                                    "type": "string",
-                                    "description": "The speaker (assistant or customer)",
-                                    "enum": [
-                                        "assistant",
-                                        "customer"
-                                    ]
-                                },
-                                "text": {
-                                    "type": "string",
-                                    "description": "The transcribed text"
-                                },
-                                "timestamp": {
-                                    "type": "string",
-                                    "format": "date-time",
-                                    "description": "Timestamp of when this part was spoken"
-                                }
-                            }
-                        },
-                        "description": "Array of transcribed segments with speaker information"
-                    },
-                    "createdAt": {
+                    "direction": {
                         "type": "string",
-                        "format": "date-time",
-                        "description": "When the transcription was created"
+                        "enum": ["outbound-api"],
+                        "description": "Direction of the call"
                     }
                 }
             },
@@ -448,25 +350,13 @@
                         "type": "string",
                         "description": "Account identifier associated with the call"
                     },
+                    "caller": {
+                        "type": "string",
+                        "description": "Phone number of the caller"
+                    },
                     "callerCountry": {
                         "type": "string",
                         "description": "Country code of the caller"
-                    },
-                    "caller": {
-                        "type": "string",
-                        "description": "Phone number or identifier of the caller"
-                    },
-                    "costInCents": {
-                        "type": "number",
-                        "description": "Total cost of the call in cents"
-                    },
-                    "endedReason": {
-                        "type": "string",
-                        "description": "Reason why the call ended"
-                    },
-                    "hangupReason": {
-                        "type": "string",
-                        "description": "Specific reason for call hangup"
                     },
                     "phoneNumber": {
                         "type": "string",
@@ -486,18 +376,30 @@
                         "type": "number",
                         "description": "Duration of the call in seconds"
                     },
+                    "costInCents": {
+                        "type": "number",
+                        "description": "Total cost of the call in cents"
+                    },
+                    "endedReason": {
+                        "type": "string",
+                        "description": "Reason why the call ended"
+                    },
+                    "hangupReason": {
+                        "type": "string",
+                        "description": "Specific reason for call hangup"
+                    },
                     "messages": {
                         "type": "array",
                         "items": {
                             "type": "object",
-                            "description": "Array of messages exchanged during the call"
+                            "description": "Messages exchanged during the call"
                         }
                     },
                     "tokenUsage": {
                         "type": "array",
                         "items": {
                             "type": "object",
-                            "description": "Array of token usage records"
+                            "description": "Token usage records"
                         }
                     },
                     "callType": {
@@ -506,19 +408,83 @@
                     },
                     "summary": {
                         "type": "string",
-                        "description": "Summary or notes about the call"
-                    },
-                    "customeAssistant": {
-                        "type": "object",
-                        "description": "Custom assistant configuration or details"
-                    },
-                    "callTime": {
-                        "type": "string",
-                        "description": "Formatted or processed call time information"
+                        "description": "Brief summary of the call"
                     }
                 }
-            }
-        },
+            },
+            "Transcription": {
+                "type": "object",
+                "required": ["id", "callLogId", "transcript", "createdAt"],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique identifier for the transcription"
+                    },
+                    "callLogId": {
+                        "type": "string",
+                        "description": "ID of the associated call log"
+                    },
+                    "transcript": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": ["speaker", "text", "timestamp"],
+                            "properties": {
+                                "speaker": {
+                                    "type": "string",
+                                    "enum": ["assistant", "customer"],
+                                    "description": "The speaker (assistant or customer)"
+                                },
+                                "text": {
+                                    "type": "string",
+                                    "description": "The transcribed text"
+                                },
+                                "timestamp": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "description": "Timestamp of when this part was spoken"
+                                }
+                            }
+                        },
+                        "description": "Array of transcribed segments with speaker information"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When the transcription was created"
+                    }
+                }
+            },
+            "Summary": {
+                "type": "object",
+                "required": ["id", "callLogId", "summary", "createdAt"],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Unique identifier for the summary"
+                    },
+                    "callLogId": {
+                        "type": "string",
+                        "description": "ID of the associated call log"
+                    },
+                    "summary": {
+                        "type": "string",
+                        "description": "Generated summary of the call"
+                    },
+                    "keyPoints": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "Key points extracted from the conversation"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "When the summary was created"
+                    }
+                }
+            },
         "Error": {
             "type": "object",
             "required": [
