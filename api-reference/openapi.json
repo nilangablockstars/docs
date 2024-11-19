@@ -222,7 +222,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/components/schemas/CallLog"
+                "$ref": "#/components/schemas/Call-logs"
               }
             }
           },
