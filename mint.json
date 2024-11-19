@@ -69,6 +69,7 @@
         "api-reference/endpoint/create",
         "api-reference/endpoint/transcriptions",
         "api-reference/endpoint/summary",
+        "api-reference/endpoint/summary2",
         "api-reference/endpoint/call-logs"
       ]
     }
