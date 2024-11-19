@@ -211,7 +211,7 @@
         }
       }
     },
-    "/api/v1/logs": {
+    "/api/v1/call-logs": {
   "get": {
     "description": "Retrieves a list of call logs.",
     "responses": {
