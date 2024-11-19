@@ -222,7 +222,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/components/schemas/Call-logs"
+                "$ref": "#/components/schemas/CallLog"
               }
             }
           },
@@ -376,6 +376,112 @@
           }
         }
       },
+      {
+  "CallLog": {
+    "type": "object",
+    "required": [
+      "callSid",
+      "assistantId",
+      "userId",
+      "streamSid",
+      "accountSid",
+      "caller",
+      "phoneNumber",
+      "startTime",
+      "endTime"
+    ],
+    "properties": {
+      "callSid": {
+        "type": "string",
+        "description": "Unique identifier for the call session"
+      },
+      "assistantId": {
+        "type": "string",
+        "description": "MongoDB ObjectId reference to the assistant"
+      },
+      "userId": {
+        "type": "string",
+        "description": "Identifier for the user associated with the call"
+      },
+      "streamSid": {
+        "type": "string",
+        "description": "Identifier for the call stream"
+      },
+      "accountSid": {
+        "type": "string",
+        "description": "Account identifier associated with the call"
+      },
+      "callerCountry": {
+        "type": "string",
+        "description": "Country code of the caller"
+      },
+      "caller": {
+        "type": "string",
+        "description": "Phone number or identifier of the caller"
+      },
+      "costInCents": {
+        "type": "number",
+        "description": "Total cost of the call in cents"
+      },
+      "endedReason": {
+        "type": "string",
+        "description": "Reason why the call ended"
+      },
+      "hangupReason": {
+        "type": "string",
+        "description": "Specific reason for call hangup"
+      },
+      "phoneNumber": {
+        "type": "string",
+        "description": "Phone number used for the call"
+      },
+      "startTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp when the call started"
+      },
+      "endTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "Timestamp when the call ended"
+      },
+      "duration": {
+        "type": "number",
+        "description": "Duration of the call in seconds"
+      },
+      "messages": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Array of messages exchanged during the call"
+        }
+      },
+      "tokenUsage": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "description": "Array of token usage records"
+        }
+      },
+      "callType": {
+        "type": "string",
+        "description": "Type or category of the call"
+      },
+      "summary": {
+        "type": "string",
+        "description": "Summary or notes about the call"
+      },
+      "customeAssistant": {
+        "type": "object",
+        "description": "Custom assistant configuration or details"
+      },
+      "callTime": {
+        "type": "string",
+        "description": "Formatted or processed call time information"
+      }
+    }
+  }
+},
       "Error": {
         "type": "object",
         "required": ["error", "message"],
