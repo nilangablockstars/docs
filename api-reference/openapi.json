@@ -148,48 +148,51 @@
       }
     },
     "/api/v1/call-logs": {
-      "get": {
-        "description": "Retrieves the call-logs.",
-        "responses": {
-          "200": {
-            "description": "Call-logs retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Transcription"
-                }
-              },
-              "text/plain": {
-                "schema": {
-                  "type": "string",
-                  "description": "Plain text transcription"
-                }
+  "get": {
+    "description": "Retrieves a list of call logs.",
+    "responses": {
+      "200": {
+        "description": "Call logs retrieved successfully.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CallLog"
               }
             }
           },
-          "400": {
-            "description": "Bad request or validation error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "description": "Plain text representation of the call logs."
             }
-          },
-          "404": {
-            "description": "Call logs not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
+          }
+        }
+      },
+      "400": {
+        "description": "Bad request or validation error.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "404": {
+        "description": "Call logs not found.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
             }
           }
         }
       }
-    },
+    }
+  }
+},
     "/api/v1/call-logs/{id}/summary": {
       "get": {
         "description": "Retrieves the summary for a specific call log",
