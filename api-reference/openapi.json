@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "https://call-x-git-dev-blockstarsorg.vercel.app"
+            "url": "https://app.callx.io"
         }
     ],
     "security": [
