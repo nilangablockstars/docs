@@ -10,7 +10,8 @@
     },
     "servers": [
         {
-            "url": "https://app.callx.io"
+            "url": "https://app.callx.io",
+            "description": "Production Server"
         }
     ],
     "security": [
