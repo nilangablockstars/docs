@@ -1,6 +1,9 @@
 {
   "$schema": "https://mintlify.com/schema.json",
   "name": "CallX",
+  "api": {
+    "baseUrl": "https://app.callx.io"
+  },
   "logo": {
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
