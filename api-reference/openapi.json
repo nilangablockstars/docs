@@ -94,7 +94,7 @@
                     }
                 }
             }
-        },
+        }, 
         "/api/v1/call-logs/{id}/transcriptions": {
             "get": {
                 "description": "Retrieves the transcription for a specific call log",
