@@ -19,7 +19,7 @@
         }
     ],
     "paths": {
-        "/api/v1/calls": {
+        "/api/v1/callss": {
             "post": {
                 "description": "Creates a new outbound call in the callX",
                 "requestBody": {
