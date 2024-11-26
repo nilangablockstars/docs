@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "https://app.callx.io/"
+            "url": "https://app.callx.io"
         }
     ],
     "security": [
@@ -95,72 +95,6 @@
                 }
             }
         }, 
-        "/api/v1/call-logs/{id}/transcriptions": {
-            "get": {
-                "description": "Retrieves the transcription for a specific call log",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "description": "The ID of the call log",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "format",
-                        "in": "query",
-                        "required": false,
-                        "description": "Response format (text for plain text, omit for JSON)",
-                        "schema": {
-                            "type": "string",
-                            "enum": [
-                                "text"
-                            ]
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Transcription retrieved successfully",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Transcription"
-                                }
-                            },
-                            "text/plain": {
-                                "schema": {
-                                    "type": "string",
-                                    "description": "Plain text transcription"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request or validation error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Call log or transcription not found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/call-logs/{id}/summary": {
             "get": {
                 "description": "Retrieves the summary for a specific call log",
@@ -216,6 +150,72 @@
                     },
                     "404": {
                         "description": "Call log or summary not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/call-logs/{id}/transcriptions": {
+            "get": {
+                "description": "Retrieves the transcription for a specific call log",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "The ID of the call log",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "required": false,
+                        "description": "Response format (text for plain text, omit for JSON)",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "text"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transcription retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Transcription"
+                                }
+                            },
+                            "text/plain": {
+                                "schema": {
+                                    "type": "string",
+                                    "description": "Plain text transcription"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request or validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Call log or transcription not found",
                         "content": {
                             "application/json": {
                                 "schema": {
