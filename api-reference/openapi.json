@@ -538,7 +538,8 @@
                     "description": "Error message describing what went wrong"
                 }
             }
-        },
+        }
+    },
     "securitySchemes": {
         "bearerAuth": {
             "type": "http",
