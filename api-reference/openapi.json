@@ -231,6 +231,7 @@
         },
         "/api/v1/call-logs": {
             "get": {
+                "operationId": "getCallLogs",
                 "description": "Retrieves a list of call logs.",
                 "parameters": [
                     {
