@@ -97,6 +97,7 @@
         },
         "/api/v1/call-logs/{id}/summary": {
             "get": {
+                "operationId": "getCallLogSummary",
                 "description": "Retrieves the summary for a specific call log",
                 "parameters": [
                     {
@@ -163,6 +164,7 @@
         },
         "/api/v1/call-logs/{id}/transcriptions": {
             "get": {
+                "operationId": "getCallLogTranscriptions",
                 "description": "Retrieves the transcription for a specific call log",
                 "parameters": [
                     {
