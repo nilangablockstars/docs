@@ -10,7 +10,7 @@
     },
     "servers": [
         {
-            "url": "https://app.callx.io"
+            "url": "https://app.callx.io/api/v1"
         }
     ],
     "security": [
