@@ -2,7 +2,7 @@
     "openapi": "3.0.1",
     "info": {
         "title": "OpenAPI CallX",
-        "description": "An API that handles outbound calls and customer interactions",
+        "description": "An API that Handles outbound calls and customer interactions",
         "license": {
             "name": "MIT"
         },
